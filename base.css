@@ -1,0 +1,62 @@
+body
+{
+    background-color: rgb(62, 120, 122);
+    font-size: 20px;
+}
+.login-form
+{
+    display: grid;
+    place-items: center;
+    margin-top: 20%;
+}
+.form-sign
+{
+    display: grid;
+    place-items: center;
+    margin-top: 10%;
+}
+.table
+{
+    display: grid;
+    place-items: center;
+    margin-top: 5%;
+}
+.form-search {
+    display: grid;
+    place-items: center;
+    margin-top: 0%;
+}
+.logout
+{
+    margin-left: 80%;
+}
+.tableth
+{
+    width :150px;
+}
+.td
+{
+    text-align: center;
+}
+.user_page
+{
+    display: grid;
+    place-items: center;
+}
+.message-form
+{
+    display: grid;
+    place-items: center;
+    margin-top: 20%;
+}
+.user_mess
+{
+    display: grid;
+    place-items: center;
+    margin-top: -10%;
+}
+.table_profile
+{
+    display: grid;
+    margin-top: 0%;
+}

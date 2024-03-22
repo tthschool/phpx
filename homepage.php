@@ -1,92 +1,65 @@
 <?php
-
-use function PHPSTORM_META\type;
-
+    include("authenticator.php");
     session_start();
-    if(!$_SESSION["login"]){
-        header("location:login.php");
-    }
-
+    echo $_SESSION["user_id"];
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="base.js"></script>
+    <link href="base.css" rel="stylesheet">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        body{
-            background-color: burlywood;
-            place-items:  center;
-            display: grid;
-            height: 120vh;
-            font-size: 20px;
-        }
-    </style>
 </head>
 <body>
+    <div class ="form-search">
+        <button class ="logout">log out</button>
+        <form  class="search" action="homepage.php" method = "POST">
+            <input autocomplete="off" autofocus placeholder="enter name" type="text" name ="search">
+            <input type="submit" name="searchbtn" value="search">
+        </form>
+    </div>
+    <div class = "table">
     <table >
         <tr>
-            <th width = "50" >id</th>
-            <th width = "200" >list user</th>
-            <th width = "200" >username</th>
-            <th>admin</th>
-            <th width= 200> delete </th>
+            <th class="tableth">id</th>
+            <th class="tableth">name</th>
+            <th class="tableth">username</th>
+            <th class="tableth">admin</th>
+            <th class="tableth"> delete </th>
+            <th class="tableth"> message </th>
         </tr>
-            <?php 
-                include("result.php");
-                foreach($data as $user){
-                    echo "<tr>";
-                    echo "<td style='text-align:center;'> {$user["id"]} </td>";
-                    echo "<td style='text-align:center;'> {$user["name"]}</td>";
-                    echo "<td style='text-align:center;'> {$user["username"]}</td>";
-                    if ($user["is_admin"] == 1){
-                        echo "<td style='text-align:center;'> true</td>";
-                    }
-                    else{
-                        echo "<td style='text-align:center;'>false</td>";
-                    }
-                    echo "  <td style = 'text-align: center';>
-                    <form action='homepage.php' method = 'post'>
-                        <input type='hidden' name = 'user_id' value ={$user['id']}>
-                        <input type='submit' name='delete' value= 'delete'>
-                    </form>
-                    </td>";
-                }
+            <?php
+              $user_list = get_user();
+              foreach($user_list as $user){
+                  echo "<tr class='user-container'>";
+                  echo "<td class='td' id='userid'>{$user["id"]}</td>";
+                  echo "<td class='td'>{$user["name"]}</td>";
+                  echo "<td class='td'>{$user["username"]}</td>";
+                  if ($user["is_admin"] == 1){
+                      echo "<td class='td'>true</td>";
+                  } else {
+                      echo "<td class='td'>false</td>";
+                  }
+                  echo "<td class='td'><button class='delete_user_btn' name='delete'>delete</button></td>";
+                  echo "<td class='td'>
+                          <form action='homepage.php' method='post'>
+                              <input type='hidden' name='user_id' id='sendmessage' value='{$user['id']}'>
+                              <input type='hidden' name='user_name'  value='{$user['name']}'>
+                              <input type='submit' id='user_profile' name='user_profile' value='profile'>
+                          </form>
+                        </td>";
+                  echo "<input type='hidden' id='session_id' value='{$_SESSION['user_id']}'>";
+              }
             ?> 
     </table>
-    <form action="homepage.php" method= "post">
-
-        <input type="submit" name="logout" value="log out">
-    </form>
+</div>
 </body>
-    
 </html>
-
 <?php
-    include("database.php");
-    if(isset($_POST["logout"]))
-    {
-        session_destroy();
-        header("location:login.php");
-    }
-    if(isset($_POST["delete"])){
-            $a =  $_POST["user_id"];
-            $b =  $_SESSION["user_id"] ;
-            if($a != $b)
-            {
-                $sql = $conn->prepare("DELETE FROM users WHERE id=?");
-                $sql->bind_param("i" , $a);
-                $sql->execute();
-                $sql->close();
-                header("location:homepage.php");
-            }
-            else{
-                echo "cant delete";
-            }
-       }
-      
-    mysqli_close($conn);
-  
-?>
-
+if(isset($_POST["user_profile"])){
+    $_SESSION["userid"] = $_POST["user_id"];
+    $_SESSION["name"] = $_POST["user_name"];
+    header("location:userpage.php");
+}

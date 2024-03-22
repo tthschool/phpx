@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+function talk(){
+    console.log(this.name);
+}
+let me = {
+    name : "hoang",
+    talk
+}
+me.talk();
+    console.log(me);
+    </script>
+</body>
+</html>
